@@ -1,0 +1,17 @@
+package slide
+
+import (
+	"image/color"
+)
+
+var (
+	colorMap = map[string]color.RGBA{
+		"white": color.RGBA{R: 0xd2, G: 0xd4, B: 0xde, A: 0xff},
+		// "white":   color.RGBA{R: 0xff, G: 0xff, B: 0xff, A: 0xff},
+		"over":      color.RGBA{R: 0x95, G: 0xc4, B: 0xce, A: 0xff},
+		"cyan":      color.RGBA{R: 0x00, G: 0xff, B: 0xff, A: 0xff},
+		"highlight": color.RGBA{R: 0xe9, G: 0x89, B: 0x89, A: 0xff},
+		"blue":      color.RGBA{R: 0x00, G: 0x00, B: 0xff, A: 0xff},
+		"mazenta":   color.RGBA{R: 0xff, G: 0x00, B: 0xff, A: 0xff},
+	}
+)

@@ -1,0 +1,11 @@
+title: " how to create slide? "
+body:
+    - color: highlight
+      text: "スライドの作り方\n"
+    - color: white
+      text: "yaml_slide　以下に.ymlファイルをつくる\n"
+    - color: white
+      text: "スライドは順番に1.yml , 2.yml ... n.yml と名前をつける\n"
+    - color: white
+      text: "実行\ngo run main.go createSlide.go\n "
+

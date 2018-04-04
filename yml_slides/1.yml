@@ -1,0 +1,10 @@
+title: "test slide 1"
+body:
+    - color: white
+      text: "gslide is slide tool\n"
+    - color: over 
+      text: "色付きの文字に対応\n"
+    - color: highlight
+      text: "change the color character \n"
+    - color: over
+      text: "test \n"
