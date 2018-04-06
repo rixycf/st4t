@@ -91,10 +91,10 @@ func (s *SlideWriter) ReadContents(path string) error {
 	return nil
 }
 
-func (s *SlideWriter) DrawTitle(title string) error {
+func (s *SlideWriter) DrawTitle() error {
 	pt := freetype.Pt(100, 100)
 	s.c.SetFontSize(120)
-	_, err := s.c.DrawString(title, pt)
+	_, err := s.c.DrawString(s.content.Title, pt)
 	if err != nil {
 		return err
 	}
@@ -102,15 +102,21 @@ func (s *SlideWriter) DrawTitle(title string) error {
 
 }
 
-func (s *SlideWriter) DrawBody(body string, color string) error {
+func (s *SlideWriter) DrawBody() error {
 	pt := freetype.Pt(200, 200)
 	// s.c.SetSrc(image.NewUniform())
-	if src, ok := colorMap[color]; ok {
-		s.c.SetSrc(image.NewUniform(src))
-	}
-	_, err := s.c.DrawString(body, pt)
-	if err != nil {
-		return err
+	for _, b := range s.content.Body {
+
+		if src, ok := colorMap[b.Color]; ok {
+			s.c.SetSrc(image.NewUniform(src))
+		}
+		_, err := s.c.DrawString(b.Text, pt)
+		if err != nil {
+			return err
+		}
+
+		pt.Y += s.c.PointToFixed(120)
+
 	}
 	return nil
 }
@@ -146,10 +152,16 @@ func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
 		return err
 	}
 
-	err = s.DrawTitle("concurrency in go ")
+	err = s.DrawTitle()
 	if err != nil {
 		return err
 	}
+
+	err = s.DrawBody()
+	if err != nil {
+		return err
+	}
+
 	err = s.DrawImage("./image/Captain-falcon.png")
 	if err != nil {
 		return err
