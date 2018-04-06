@@ -24,6 +24,8 @@ func render() {
 	// fmt.Printf("%+v", size)
 	// width, height := size.Width, size.Height
 	s := slide.SlideWriter{}
+	s.ReadContents("./yml_slides/1.yml")
+	fmt.Println(s)
 	// s.Init(size.Width, size.Height)
 
 	term := &term.ImageWriter{}
