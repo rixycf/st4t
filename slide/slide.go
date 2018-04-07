@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"image"
-	"image/color"
 	"image/draw"
 	"image/png"
 	"io"
@@ -18,13 +17,18 @@ import (
 )
 
 const (
-	fontfile = "./fonts/RictyDiminished-Regular.ttf"
+	// fontfile = "./fonts/RictyDiminished-Regular.ttf"
+	fontfile = "./fonts/RictyDiminished-Bold.ttf"
 )
 
 var (
+	// dpi           = 72.0
 	dpi           = 72.0
 	titleFontSize = 120.0
 	bodyFontSize  = 80.0
+
+	bg = colorMap["bg"]
+	fg = colorMap["fg"]
 )
 
 type Slide struct {
@@ -48,9 +52,11 @@ type SlideWriter struct {
 func (s *SlideWriter) Init(w, h int) error {
 	// init image size
 	s.imgWidth, s.imgHeight = w, h
+	// s.imgWidth, s.imgHeight = 2880, 1800
+	// s.imgWidth, s.imgHeight = 200, 200
 
 	s.img = image.NewRGBA(image.Rect(0, 0, s.imgWidth, s.imgHeight))
-	draw.Draw(s.img, s.img.Bounds(), image.NewUniform(color.White), image.ZP, draw.Over)
+	draw.Draw(s.img, s.img.Bounds(), image.NewUniform(bg), image.ZP, draw.Over)
 
 	// init c freetypa.Context struct
 	fontBytes, err := ioutil.ReadFile(fontfile)
@@ -69,7 +75,7 @@ func (s *SlideWriter) Init(w, h int) error {
 	s.c.SetFontSize(titleFontSize)
 	s.c.SetClip(s.img.Bounds())
 	s.c.SetDst(s.img)
-	s.c.SetSrc(image.NewUniform(color.Black))
+	s.c.SetSrc(image.NewUniform(fg))
 
 	// printf debug
 
@@ -93,7 +99,7 @@ func (s *SlideWriter) ReadContents(path string) error {
 
 func (s *SlideWriter) DrawTitle() error {
 	pt := freetype.Pt(100, 100)
-	s.c.SetFontSize(120)
+	s.c.SetFontSize(titleFontSize)
 	_, err := s.c.DrawString(s.content.Title, pt)
 	if err != nil {
 		return err
@@ -104,6 +110,7 @@ func (s *SlideWriter) DrawTitle() error {
 
 func (s *SlideWriter) DrawBody() error {
 	pt := freetype.Pt(200, 200)
+	s.c.SetFontSize(bodyFontSize)
 	// s.c.SetSrc(image.NewUniform())
 	for _, b := range s.content.Body {
 
@@ -115,7 +122,7 @@ func (s *SlideWriter) DrawBody() error {
 			return err
 		}
 
-		pt.Y += s.c.PointToFixed(120)
+		pt.Y += s.c.PointToFixed(bodyFontSize)
 
 	}
 	return nil
@@ -138,9 +145,8 @@ func (s *SlideWriter) DrawImage(path string) error {
 	pt := image.Point{X: -s.imgWidth / 2, Y: -s.imgHeight / 2}
 	fmt.Printf("%+v\n", pt)
 	// pt := image.Point{X: 20, Y: 20}
-	fmt.Println(srcImg.Bounds())
 	// draw src image on SlideWrite image
-	draw.Draw(s.img, s.img.Bounds(), srcImg, pt, draw.Src)
+	draw.Draw(s.img, s.img.Bounds(), srcImg, pt, draw.Over)
 
 	return nil
 }
@@ -162,7 +168,7 @@ func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
 		return err
 	}
 
-	err = s.DrawImage("./image/Captain-falcon.png")
+	err = s.DrawImage("./image/moby.png")
 	if err != nil {
 		return err
 	}

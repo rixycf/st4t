@@ -1,10 +1,10 @@
 title: "test slide 1"
 body:
-    - color: white
-      text: "gslide is slide tool\n"
-    - color: over 
-      text: "色付きの文字に対応\n"
+    - color: fg
+      text: "st4t: slide tool for iTerm2\n"
+    - color: fg
+      text: "Concurrency in Go"
     - color: highlight
-      text: "change the color character \n"
-    - color: over
-      text: "test \n"
+      text: "にほんご"
+    - color: fg
+      text: "漢字"
