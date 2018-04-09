@@ -3,7 +3,6 @@ package slide
 import (
 
 	// "image"
-	"fmt"
 
 	"image"
 	"image/draw"
@@ -143,7 +142,6 @@ func (s *SlideWriter) DrawImage(path string) error {
 	}
 
 	pt := image.Point{X: -s.imgWidth / 2, Y: -s.imgHeight / 2}
-	fmt.Printf("%+v\n", pt)
 	// pt := image.Point{X: 20, Y: 20}
 	// draw src image on SlideWrite image
 	draw.Draw(s.img, s.img.Bounds(), srcImg, pt, draw.Over)

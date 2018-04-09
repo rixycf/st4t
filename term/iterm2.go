@@ -42,7 +42,6 @@ func initCellSize() {
 	fileSetReadDeadline(os.Stdout, time.Now().Add(time.Second))
 	defer fileSetReadDeadline(os.Stdout, time.Time{})
 	fmt.Fscanf(os.Stdout, ecsi+"]1337;ReportCellSize=%f;%f"+ecsi+"\\", &cellHeight, &cellWidth)
-	fmt.Println(cellHeight, cellWidth)
 }
 
 func Size() (size TermSize, err error) {
