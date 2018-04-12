@@ -28,6 +28,10 @@ func fileSetReadDeadline(f *os.File, t time.Time) error {
 	return nil
 }
 
+func ClearScrollback() {
+	print(ecsi + "]1337;ClearScrollback" + st)
+}
+
 func initCellSize() {
 	s, err := terminal.MakeRaw(1)
 	if err != nil {

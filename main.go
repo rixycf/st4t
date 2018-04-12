@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/rixycf/st4t/slide"
 	"github.com/rixycf/st4t/term"
@@ -29,11 +30,27 @@ func main() {
 	}
 
 	files, err := getYmlFiles(path[0])
+	fmt.Println(files)
 	if err != nil {
 		fmt.Printf("getYmlFiles() error : %v\n", err)
 	}
 
+	term.CursorSavaPositon()
 	render(files[0])
+	time.Sleep(time.Second * 1)
+	// term.ClearScrollback()
+	// term.ClearScrollback()
+	term.CursorRestorePosition()
+	render(files[1])
+
+	// render(files[0])
+	// fmt.Printf("\n")
+	// time.Sleep(time.Second * 1)
+	// // time.Sleep(time.Second * 1)
+	// render(files[1])
+	// fmt.Printf("slide 2\n")
+	// time.Sleep(time.Second * 5)
+	// term.ClearScrollback()
 	// ch := make(chan int)
 	// go func() {
 	// 	fmt.Printf("goroutine\n")
@@ -123,5 +140,4 @@ func getYmlFiles(dir string) ([]string, error) {
 	}
 
 	return ymlFiles, nil
-
 }
