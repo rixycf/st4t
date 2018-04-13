@@ -4,10 +4,10 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/rixycf/st4t/slide"
 	"github.com/rixycf/st4t/term"
@@ -35,13 +35,29 @@ func main() {
 		fmt.Printf("getYmlFiles() error : %v\n", err)
 	}
 
-	term.CursorSavaPositon()
-	render(files[0])
-	time.Sleep(time.Second * 1)
-	// term.ClearScrollback()
-	// term.ClearScrollback()
-	term.CursorRestorePosition()
-	render(files[1])
+	// term.CursorSavaPositon()
+	// render(files[0])
+	// time.Sleep(time.Second * 1)
+	//
+	// term.CursorRestorePosition()
+	// render(files[1])
+	i := 0
+	for {
+
+		buf := make([]byte, 2)
+		_, err := os.Stdin.Read(buf)
+		if err == io.EOF {
+			fmt.Printf("EOF")
+			break
+		}
+		term.CursorSavaPositon()
+		render(files[i])
+		term.CursorRestorePosition()
+		i++
+		if i > len(files)-1 {
+			i = 0
+		}
+	}
 
 	// render(files[0])
 	// fmt.Printf("\n")

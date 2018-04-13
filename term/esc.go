@@ -2,10 +2,12 @@ package term
 
 import "fmt"
 
+type Direction string
+
 const (
-	//
 	esc = "\033"
 
+	// "Direction" is used by CursorMove() func
 	Up                 Direction = "A"
 	Down               Direction = "B"
 	Forward            Direction = "C"

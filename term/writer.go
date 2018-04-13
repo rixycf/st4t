@@ -30,5 +30,6 @@ func (w *ImageWriter) Close() error {
 	w.once.Do(w.init)
 	// w.buf.Bytes() でバッファの中身を取り出す.
 	fmt.Printf(ecsi+"]1337;File=preserveAspectRatio=1;inline=1:%s%s", w.buf.Bytes(), st)
+	// fmt.Printf(ecsi+"]1337;File=preserveAspectRatio=0;inline=0:%s%s", w.buf.Bytes(), st)
 	return w.b64enc.Close()
 }
