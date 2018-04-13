@@ -41,6 +41,11 @@ func main() {
 	//
 	// term.CursorRestorePosition()
 	// render(files[1])
+
+	// スライドショー終了時にターミナルの履歴をクリアする
+	defer term.ClearScrollback()
+
+	// スライドショー return keyを押す毎にスライドを送る．
 	i := 0
 	for {
 
