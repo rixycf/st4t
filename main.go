@@ -16,8 +16,8 @@ import (
 func main() {
 
 	flag.Parse()
-	path := flag.Args()
-	if len(path) < 1 {
+	dir := flag.Args()
+	if len(dir) < 1 {
 		fmt.Printf("please set args\n")
 		os.Exit(1)
 	}
@@ -29,26 +29,23 @@ func main() {
 		os.Exit(1)
 	}
 
-	files, err := getYmlFiles(path[0])
+	files, err := getYmlFiles(dir[0])
 	fmt.Println(files)
 	if err != nil {
 		fmt.Printf("getYmlFiles() error : %v\n", err)
 	}
 
-	// term.CursorSavaPositon()
-	// render(files[0])
-	// time.Sleep(time.Second * 1)
-	//
-	// term.CursorRestorePosition()
-	// render(files[1])
-
 	// スライドショー終了時にターミナルの履歴をクリアする
 	defer term.ClearScrollback()
 
 	// スライドショー return keyを押す毎にスライドを送る．
+	slideShow(files)
+
+}
+
+func slideShow(path []string) {
 	i := 0
 	for {
-
 		buf := make([]byte, 2)
 		_, err := os.Stdin.Read(buf)
 		if err == io.EOF {
@@ -56,53 +53,14 @@ func main() {
 			break
 		}
 		term.CursorSavaPositon()
-		render(files[i])
+		render(path[i])
 		term.CursorRestorePosition()
 		i++
-		if i > len(files)-1 {
+		if i > len(path)-1 {
 			i = 0
 		}
 	}
 
-	// render(files[0])
-	// fmt.Printf("\n")
-	// time.Sleep(time.Second * 1)
-	// // time.Sleep(time.Second * 1)
-	// render(files[1])
-	// fmt.Printf("slide 2\n")
-	// time.Sleep(time.Second * 5)
-	// term.ClearScrollback()
-	// ch := make(chan int)
-	// go func() {
-	// 	fmt.Printf("goroutine\n")
-	// 	ch <- 5
-	// }()
-	// <-ch
-
-	// wg := &sync.WaitGroup{}
-	// wg.Add(1)
-	// defer wg.Wait()
-	// exit := make(chan struct{})
-	// go func() {
-	// 	t := time.NewTicker(time.Second)
-	//
-	// 	i := 0
-	// LOOP:
-	// 	for {
-	// 		select {
-	// 		case <-t.C:
-	// 			fmt.Println("test")
-	// 			i++
-	// 			if i < 10 {
-	// 				exit <- 0
-	// 			}
-	// 		case <-exit:
-	// 			break LOOP
-	// 		}
-	// 	}
-	// }()
-
-	// render()
 }
 
 func render(path string) {
