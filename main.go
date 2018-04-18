@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/rixycf/st4t/slide"
 	"github.com/rixycf/st4t/term"
@@ -38,11 +39,38 @@ func main() {
 	// スライドショー終了時にターミナルの履歴をクリアする
 	defer term.ClearScrollback()
 
+	err = cleanTerm()
+	if err != nil {
+		fmt.Printf("error: %v", err)
+	}
 	// スライドショー return keyを押す毎にスライドを送る．
 	slideShow(files)
 
 }
 
+func cleanTerm() error {
+	size, err := term.Size()
+	if err != nil {
+		return err
+	}
+	if size.Row == 0 {
+		return errors.New("failed get terminal size")
+	}
+	print(strings.Repeat("\n", size.Row))
+	term.CursorMove(term.Up, size.Row+2)
+	return nil
+}
+
+// func (row int) error {
+// 	if row == 0 {
+// 		return errors.New("row value : 0")
+// 	}
+// 	print(strings.Repeat("\n", row))
+// 	return nil
+// }
+
+// slideShow start slide show
+// if you type return key , then this app show next slide
 func slideShow(path []string) {
 	i := 0
 	for {
@@ -60,7 +88,6 @@ func slideShow(path []string) {
 			i = 0
 		}
 	}
-
 }
 
 func render(path string) {
@@ -85,10 +112,11 @@ func render(path string) {
 	}
 }
 
+// checkTerm check terminal application.
 func checkTerm() error {
 
 	if os.Getenv("TERM") != "xterm-256color" {
-		return errors.New("test")
+		return errors.New("this app runs only on iTerm2 ")
 	}
 
 	if os.Getenv("TERM_PROGRAM") != "iTerm.app" {
@@ -97,6 +125,7 @@ func checkTerm() error {
 	return nil
 }
 
+// getYmlFiles get yml files from args
 func getYmlFiles(dir string) ([]string, error) {
 	ymlFiles := make([]string, 0, 10)
 

@@ -149,7 +149,7 @@ func (s *SlideWriter) DrawImage(path string) error {
 	return nil
 }
 
-// return image data
+// Render write png image to wr
 func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
 	err := s.Init(w, h)
 	if err != nil {

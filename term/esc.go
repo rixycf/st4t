@@ -26,7 +26,7 @@ func ShowCursor() {
 }
 
 func CursorMove(d Direction, n int) {
-	fmt.Printf("%s%d%s", esc, n, d)
+	fmt.Printf("%s[%d%s", esc, n, d)
 }
 
 func CursorSavaPositon() {
