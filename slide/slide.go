@@ -24,7 +24,7 @@ var (
 	// dpi           = 72.0
 	dpi           = 72.0
 	titleFontSize = 120.0
-	bodyFontSize  = 80.0
+	bodyFontSize  = 40.0
 
 	bg = colorMap["bg"]
 	fg = colorMap["fg"]
@@ -75,8 +75,6 @@ func (s *SlideWriter) Init(w, h int) error {
 	s.c.SetClip(s.img.Bounds())
 	s.c.SetDst(s.img)
 	s.c.SetSrc(image.NewUniform(fg))
-
-	// printf debug
 
 	return nil
 }
@@ -166,9 +164,11 @@ func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
 		return err
 	}
 
-	err = s.DrawImage("./image/moby.png")
-	if err != nil {
-		return err
+	if s.content.Image != "" {
+		err = s.DrawImage(s.content.Image)
+		if err != nil {
+			return err
+		}
 	}
 
 	return png.Encode(wr, s.img)

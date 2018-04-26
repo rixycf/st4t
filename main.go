@@ -43,7 +43,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("error: %v", err)
 	}
-	// スライドショー return keyを押す毎にスライドを送る．
+	// スライドショー return keyを押す毎にスライドを変える
 	slideShow(files)
 
 }

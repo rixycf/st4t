@@ -8,3 +8,5 @@ body:
       text: "にほんご"
     - color: fg
       text: "漢字"
+image: "./image/moby.png"
+
