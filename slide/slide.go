@@ -4,6 +4,7 @@ import (
 
 	// "image"
 
+	"fmt"
 	"image"
 	"image/draw"
 	"image/png"
@@ -36,7 +37,11 @@ type Slide struct {
 		Color string
 		Text  string
 	}
-	Image string
+	Image struct {
+		Path string
+		X    int
+		Y    int
+	}
 }
 
 type SlideWriter struct {
@@ -125,7 +130,7 @@ func (s *SlideWriter) DrawBody() error {
 	return nil
 }
 
-func (s *SlideWriter) DrawImage(path string) error {
+func (s *SlideWriter) DrawImage(path string, x, y int) error {
 	// image file open
 	f, err := os.Open(path)
 	defer f.Close()
@@ -139,9 +144,8 @@ func (s *SlideWriter) DrawImage(path string) error {
 		return err
 	}
 
-	pt := image.Point{X: -s.imgWidth / 2, Y: -s.imgHeight / 2}
-	// pt := image.Point{X: 20, Y: 20}
-	// draw src image on SlideWrite image
+	pt := image.Point{X: -x, Y: -y}
+
 	draw.Draw(s.img, s.img.Bounds(), srcImg, pt, draw.Over)
 
 	return nil
@@ -149,6 +153,7 @@ func (s *SlideWriter) DrawImage(path string) error {
 
 // Render write png image to wr
 func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
+	fmt.Println(s)
 	err := s.Init(w, h)
 	if err != nil {
 		return err
@@ -164,8 +169,9 @@ func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
 		return err
 	}
 
-	if s.content.Image != "" {
-		err = s.DrawImage(s.content.Image)
+	if s.content.Image.Path != "" {
+		fmt.Println("success")
+		err = s.DrawImage(s.content.Image.Path, s.content.Image.X, s.content.Image.Y)
 		if err != nil {
 			return err
 		}
