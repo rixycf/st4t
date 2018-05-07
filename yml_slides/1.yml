@@ -10,6 +10,6 @@ body:
       text: "漢字"
 image: 
     path: "./image/moby.png"
-    x: 500
+    x: 1000
     y: 500
 

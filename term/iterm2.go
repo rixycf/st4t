@@ -33,6 +33,8 @@ func ClearScrollback() {
 }
 
 func initCellSize() {
+	// terminalをrawモードに変更する
+	// 標準入力をそのままプロセスに渡すモード バッファリングしない
 	s, err := terminal.MakeRaw(1)
 	if err != nil {
 		return

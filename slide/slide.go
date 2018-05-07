@@ -1,10 +1,6 @@
 package slide
 
 import (
-
-	// "image"
-
-	"fmt"
 	"image"
 	"image/draw"
 	"image/png"
@@ -17,15 +13,17 @@ import (
 )
 
 const (
-	// fontfile = "./fonts/RictyDiminished-Regular.ttf"
-	fontfile = "./fonts/RictyDiminished-Bold.ttf"
+	fontfile_bold = "./fonts/RictyDiminished-Bold.ttf"
+	fontfile      = "./fonts/RictyDiminished.ttf"
 )
 
 var (
 	// dpi           = 72.0
-	dpi           = 72.0
-	titleFontSize = 120.0
-	bodyFontSize  = 40.0
+	dpi = 210.0
+	// titleFontSize = 120.0
+	// bodyFontSize  = 40.0
+	titleFontSize = 40.0
+	bodyFontSize  = 20.0
 
 	bg = colorMap["bg"]
 	fg = colorMap["fg"]
@@ -63,7 +61,7 @@ func (s *SlideWriter) Init(w, h int) error {
 	draw.Draw(s.img, s.img.Bounds(), image.NewUniform(bg), image.ZP, draw.Over)
 
 	// init c freetypa.Context struct
-	fontBytes, err := ioutil.ReadFile(fontfile)
+	fontBytes, err := ioutil.ReadFile(fontfile_bold)
 	if err != nil {
 		return err
 	}
@@ -153,7 +151,6 @@ func (s *SlideWriter) DrawImage(path string, x, y int) error {
 
 // Render write png image to wr
 func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
-	fmt.Println(s)
 	err := s.Init(w, h)
 	if err != nil {
 		return err
@@ -170,7 +167,6 @@ func (s *SlideWriter) Render(wr io.Writer, w, h int) error {
 	}
 
 	if s.content.Image.Path != "" {
-		fmt.Println("success")
 		err = s.DrawImage(s.content.Image.Path, s.content.Image.X, s.content.Image.Y)
 		if err != nil {
 			return err

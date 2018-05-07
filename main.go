@@ -4,7 +4,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,6 +11,7 @@ import (
 
 	"github.com/rixycf/st4t/slide"
 	"github.com/rixycf/st4t/term"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 	dir := flag.Args()
 	if len(dir) < 1 {
-		fmt.Printf("please set args\n")
+		fmt.Printf("please set directory\n")
 		os.Exit(1)
 	}
 
@@ -43,7 +43,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("error: %v", err)
 	}
-	// スライドショー return keyを押す毎にスライドを変える
+
 	slideShow(files)
 
 }
@@ -72,21 +72,49 @@ func cleanTerm() error {
 // slideShow start slide show
 // if you type return key , then this app show next slide
 func slideShow(path []string) {
+	// slide index
 	i := 0
+	const (
+		hKey = 0x68
+		jKey = 0x6a
+		kKey = 0x6b
+		lKey = 0x6c
+		qKey = 0x71
+	)
+	term.CursorSavaPositon()
+	render(path[i])
+	term.CursorRestorePosition()
+
+END_SLIDE:
 	for {
-		buf := make([]byte, 2)
-		_, err := os.Stdin.Read(buf)
-		if err == io.EOF {
-			fmt.Printf("EOF")
-			break
-		}
+		buf := make([]byte, 1)
+		// 標準入力を一文字ずつ受け取るためにrawモードにする
+		s, _ := terminal.MakeRaw(1)
+		os.Stdin.Read(buf)
+		terminal.Restore(1, s)
+
 		term.CursorSavaPositon()
-		render(path[i])
-		term.CursorRestorePosition()
-		i++
-		if i > len(path)-1 {
-			i = 0
+
+		// slide show
+		switch buf[0] {
+		case hKey:
+			i--
+			if i < 0 {
+				i = len(path) - 1
+			}
+			render(path[i])
+		case lKey:
+			i++
+			if i > len(path)-1 {
+				i = 0
+			}
+			render(path[i])
+		case qKey:
+			break END_SLIDE
+		default:
 		}
+
+		term.CursorRestorePosition()
 	}
 }
 
