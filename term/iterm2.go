@@ -34,13 +34,13 @@ func ClearScrollback() {
 
 func initCellSize() {
 	// terminalをrawモードに変更する
+	// カノニカルモード
 	// 標準入力をそのままプロセスに渡すモード バッファリングしない
 	s, err := terminal.MakeRaw(1)
 	if err != nil {
 		return
 	}
-	// fmt.Printf("value of : %+v\n", s)
-	// fmt.Printf("type of : %T\n", s)
+	// 非カノニカルモードへ
 	defer terminal.Restore(1, s)
 	// iTerm2のエスケープコードを使用してセルのサイズを取得
 	fmt.Fprintf(os.Stdout, ecsi+"]1337;ReportCellSize"+st)
