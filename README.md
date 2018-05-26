@@ -13,6 +13,7 @@ unsupported tmux and screen.
 `go run main.go yml_files`
 
 ### Demo
+![st4t](https://github.com/rixycf/st4t/blob/media/st4t.gif)
 
 ### reference
 https://github.com/rs/jplot
