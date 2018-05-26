@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 	dir := flag.Args()
 	if len(dir) < 1 {
-		fmt.Printf("please set directory\n")
+		fmt.Printf("please set directory \n")
 		os.Exit(1)
 	}
 
